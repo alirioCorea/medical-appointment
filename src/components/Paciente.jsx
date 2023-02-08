@@ -1,5 +1,5 @@
-export default function Paciente({ paciente, setPaciente }) {
-  const { nombre, propietario, fecha, sintomas } = paciente;
+export default function Paciente({ paciente, setPaciente,eliminarPaciente }) {
+  const { nombre, propietario, fecha, sintomas,id } = paciente;
   return (
     <div className="m-3 bg-custom-text shadow-md px-5 py-5 rounded-xl">
       <p className="font-bold mb-3 text-white uppercase">
@@ -25,7 +25,10 @@ export default function Paciente({ paciente, setPaciente }) {
         >
           Editar
         </button>
-        <button className="bg-red-500 hover:bg-red-700 w-full mt-5 p-2 text-white uppercase font-bold rounded">
+        <button 
+          className="bg-red-500 hover:bg-red-700 w-full mt-5 p-2 text-white uppercase font-bold rounded"
+          onClick={() => eliminarPaciente(id)}
+        >
           Eliminar
         </button>
       </div>

@@ -1,6 +1,6 @@
 import Paciente from "./Paciente";
 
-export default function ListadoPacientes({ pacientes,setPaciente }) {
+export default function ListadoPacientes({ pacientes,setPaciente,eliminarPaciente }) {
   return (
     <div className="md:w-1/2 lg:w-3/5 md:h-screen overflow-y-scroll">
       {pacientes && pacientes.length ? (
@@ -12,7 +12,7 @@ export default function ListadoPacientes({ pacientes,setPaciente }) {
             esta sección
           </p>
           {pacientes.map((paciente) => (
-            <Paciente key={paciente.id} paciente={paciente} setPaciente={setPaciente}/>
+            <Paciente key={paciente.id} paciente={paciente} setPaciente={setPaciente} eliminarPaciente={eliminarPaciente}/>
           ))}
         </>
       ) : (
