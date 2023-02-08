@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Alert from "./Alert";
 
-export default function Formulario( {setPacientes,pacientes} ) {
+export default function Formulario( {setPacientes,pacientes,paciente,setPaciente} ) {
     const [nombre, setNombre] = useState('');
     const [propietario, setPropietario] = useState('');
     const [fecha, setFecha] = useState('');
@@ -10,6 +10,20 @@ export default function Formulario( {setPacientes,pacientes} ) {
     const [error, setError] = useState(false);
     const errorMessage = "Todos los campos son obligatorios";
 
+    useEffect(() => {
+        if(paciente){
+            const { nombre, propietario, fecha, email, sintomas } = paciente;
+            setNombre(nombre);
+            setPropietario(propietario);
+            setFecha(fecha);
+            setEmail(email);
+            setSintomas(sintomas);
+        }
+    }, [paciente])
+
+    const createNewId = () => {
+        return Math.random().toString(36).substring(2) + Date.now().toString(36);
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -17,16 +31,31 @@ export default function Formulario( {setPacientes,pacientes} ) {
             setError(true);
             return;
         }
-        setError(false);s
-        const paciente = {
+        setError(false);
+
+        const nuvoPaciente = {
             nombre,
             propietario,
             fecha,
             email,
-            sintomas
+            sintomas,
         }
 
-        setPacientes([...pacientes, paciente]);
+        if(paciente.id){
+            nuvoPaciente.id = paciente.id;
+            const newPacientes = pacientes.map(pacienteState => pacienteState.id === paciente.id ? nuvoPaciente : pacienteState);
+            setPacientes(newPacientes);
+            setPaciente({});
+        }else{
+            nuvoPaciente.id = createNewId();
+            setPacientes([...pacientes, nuvoPaciente]);
+        }
+
+        setNombre("");
+        setPropietario("");
+        setFecha("");
+        setEmail("");
+        setSintomas("");
     }
 
   return (
@@ -35,7 +64,7 @@ export default function Formulario( {setPacientes,pacientes} ) {
         Seguimientos Pacientes
       </h2>
       <p className="text-lg mt-5 text-center mb-5">Añade los pacientes en esta sección y <span className="font-bold">administra sus citas</span></p>
-        <form className="bg-custom-secondary shadow-md rounded-lg py-8 px-5 mb-10" onSubmit={handleSubmit}>
+        <form className="bg-custom-secondary shadow-md rounded-lg py-8 px-5 mb-10 ml-3" onSubmit={handleSubmit}>
             {
                 error && <Alert mensaje={errorMessage}/> 
             }
@@ -120,7 +149,7 @@ export default function Formulario( {setPacientes,pacientes} ) {
             <input 
                 type="submit"
                 className="bg-custom-text text-custom-background font-bold w-full p-3 uppercase hover:shadow-2xl cursor-pointer"
-                value="Agregar Paciente"
+                value={paciente.id ? "Editar Paciente" : "Agregar Paciente"}
             />
         </form>
     </div>
