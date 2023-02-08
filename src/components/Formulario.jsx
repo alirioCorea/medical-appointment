@@ -137,7 +137,7 @@ export default function Formulario( {setPacientes,pacientes,paciente,setPaciente
                     className="border-2 w-full p-2 mt-2 border-custom-text placeholder-custom-text rounded-md"
                     placeholder="Describe los sintomas"
                     id="sintomas"
-                    value={sintomas}
+                    value={sintomas || ""}
                     onChange={e => setSintomas(e.target.value)}
                     required
                     onInvalid={e => {
